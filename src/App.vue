@@ -1,8 +1,20 @@
 <template>
-	<div id="app">
+	<div>
 		<router-view/>
 	</div>
 </template>
+<script>
+import getApiToken from "@/utils/$api.token";
+export default {
+	name: "App",
+	data() {
+		return {};
+	},mounted() {
+		getApiToken();
+	},
+};
+</script>
+
 
 <style lang="less">
 #app {

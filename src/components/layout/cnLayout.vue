@@ -5,11 +5,16 @@
 			<slot></slot>
 		</div>
 		<van-tabbar v-model="active" active-color="#07c160">
-			<van-tabbar-item icon="wap-home">首页</van-tabbar-item>
-			<van-tabbar-item icon="orders-o">新闻</van-tabbar-item>
-			<van-tabbar-item icon="notes-o">闪存</van-tabbar-item>
-			<van-tabbar-item icon="question-o">博问</van-tabbar-item>
-				<van-tabbar-item icon="user-o">我</van-tabbar-item>
+			<!-- <van-tabbar-item icon="wap-home" @click="go('/')">首页</van-tabbar-item>
+			<van-tabbar-item icon="orders-o" @click="go('/news')">新闻</van-tabbar-item>
+			<van-tabbar-item icon="notes-o" @click="go('./flashMemory')">闪存</van-tabbar-item>
+			<van-tabbar-item icon="question-o" @click="go('./question')">博问</van-tabbar-item>
+			<van-tabbar-item icon="user-o" @click="go('./self')">我</van-tabbar-item>-->
+			<van-tabbar-item icon="wap-home" to="/">首页</van-tabbar-item>
+			<van-tabbar-item icon="orders-o" to="./news">新闻</van-tabbar-item>
+			<van-tabbar-item icon="notes-o" to="./flashMemory">闪存</van-tabbar-item>
+			<van-tabbar-item icon="question-o" to="./question">博问</van-tabbar-item>
+			<van-tabbar-item icon="user-o" to="./self">我</van-tabbar-item>
 		</van-tabbar>
 	</div>
 </template>
@@ -17,11 +22,16 @@
 <script>
 export default {
 	name: "cnLayout",
-	data() {
-    return {
-      active: 0
-    }
-  }
+	props: {
+		active: null
+	},
+	methods: {
+		go(url) {
+			if (!window.location.href.endsWith(url)) {
+				this.$router.push(url);
+			}
+		}
+	}
 };
 </script>
 
