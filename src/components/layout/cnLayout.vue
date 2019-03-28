@@ -5,11 +5,6 @@
 			<slot></slot>
 		</div>
 		<van-tabbar v-model="active" active-color="#07c160">
-			<!-- <van-tabbar-item icon="wap-home" @click="go('/')">首页</van-tabbar-item>
-			<van-tabbar-item icon="orders-o" @click="go('/news')">新闻</van-tabbar-item>
-			<van-tabbar-item icon="notes-o" @click="go('./flashMemory')">闪存</van-tabbar-item>
-			<van-tabbar-item icon="question-o" @click="go('./question')">博问</van-tabbar-item>
-			<van-tabbar-item icon="user-o" @click="go('./self')">我</van-tabbar-item>-->
 			<van-tabbar-item icon="wap-home" to="/">首页</van-tabbar-item>
 			<van-tabbar-item icon="orders-o" to="./news">新闻</van-tabbar-item>
 			<van-tabbar-item icon="notes-o" to="./flashMemory">闪存</van-tabbar-item>

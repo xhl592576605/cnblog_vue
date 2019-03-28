@@ -4,14 +4,12 @@
 	</div>
 </template>
 <script>
-import getApiToken from "@/utils/$api.token";
 export default {
 	name: "App",
 	data() {
 		return {};
 	},mounted() {
-		getApiToken();
-	},
+	}
 };
 </script>
 

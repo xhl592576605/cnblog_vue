@@ -3,7 +3,7 @@
 		<cn-layout :active="0">
 			<van-tabs swipeable sticky color="#07c160">
 				<van-tab v-for="(tab,index) in cnHomeTabs" :title="tab.name" :key="index">
-					<div class="items" v-if="tab.name==='博客'">
+					<div class="tab-items" v-if="tab.name==='博客'">
 						<van-pull-refresh v-model="tab.isPushUpLoading" @refresh="onBlogUpRefresh">
 							<van-list
 								v-model="tab.isPushDownLoading"
@@ -14,7 +14,7 @@
 							</van-list>
 						</van-pull-refresh>
 					</div>
-					<div class="items" v-if="tab.name==='精华'">
+					<div class="tab-items" v-if="tab.name==='精华'">
 						<van-pull-refresh v-model="tab.isPushUpLoading" @refresh="onPickedUpRefresh">
 							<van-list
 								v-model="tab.isPushDownLoading"
@@ -25,7 +25,7 @@
 							</van-list>
 						</van-pull-refresh>
 					</div>
-					<div class="items" v-if="tab.name==='知识库'">
+					<div class="tab-items" v-if="tab.name==='知识库'">
 						<van-pull-refresh v-model="tab.isPushUpLoading" @refresh="onKbArticlesUpRefresh">
 							<van-list
 								v-model="tab.isPushDownLoading"
@@ -217,33 +217,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.tabs {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-}
-.items {
-	// padding-bottom: 70px;
-	margin-bottom: 47px;
-	box-sizing: border-box;
-	padding-top: 5px;
-	// height: 100%;
-	// overflow-y:hidden;
-	background-color: #ffffff;
-}
-.tip {
-	margin-top: 10px;
-	color: gray;
-	padding: 5px 0px;
-	text-align: center;
-	border-bottom: 5px solid #eeeeee;
-}
-.loadmore {
-	text-align: center;
-	line-height: 40px;
-	border-bottom: 5px solid #eeeeee;
-	color: gray;
-}
+
 </style>
 

@@ -1,6 +1,7 @@
+//process.env.NODE_ENV === 'production'
 module.exports = {
     publicPath: "/",
-    productionSourceMap: true,
+    productionSourceMap: false,
     devServer: {
         host: "192.168.123.22",
         port: 8080,

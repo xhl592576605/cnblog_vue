@@ -32,16 +32,7 @@ const dateFormat = str => {
     } else {
         return moment(str).fromNow();
     }
-
-    var dateGetTime = date.getTime();
-    var nowGetTime = new Date().getTime();
-    if (nowGetTime - dateGetTime < 60 * 1000) {
-        return "1分钟前";
-    } else if (nowGetTime - dateGetTime < 60 * 60 * 1000) {
-        return "1小时内发布";
-    } else {
-        return date.toLocaleDateString();
-    }
+  
 };
 
 Vue.filter("imgConvert", imgConvert);

@@ -41,6 +41,16 @@ let configs = [
         component: () => 
             import("@/views/BlogApp.vue")
         
+    },{
+        path:"/blogDetail",
+        name:"blogDetail",
+        component:()=>
+            import("@/views/BlogDetail.vue")
+    },{
+        path:"/knowledgeDeatil",
+        name:"knowledgeDeatil",
+        component:()=>
+            import("@/views/KnowledgeDeatil")
     }
 ];
 

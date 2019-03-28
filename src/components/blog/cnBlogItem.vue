@@ -1,18 +1,21 @@
 <template>
-	<div class="item">
-		<div class="header" v-if="!isSelf">
-			<img class="faceImg" :src="item.Avatar | imgConvert" @error="errorFace" @click="gotoZone">
-			<div class="blog" @click="gotoZone">{{item.Author}}</div>
+	<div class="blog-item">
+		<div class="blog-item_header" v-if="!isSelf">
+			<img class="blog-item_faceImg" :src="item.Avatar | imgConvert" @error="errorFace" @click="gotoZone">
+			<div class="blog-item_author" @click="gotoZone">{{item.Author}}</div>
 		</div>
-		<div class="title">{{item.Title}}</div>
-		<div class="summary">{{item.Description}}</div>
-		<van-row class="opt">
-			<van-col class="name blogItem-footer" span="8">{{item.BlogApp}}</van-col>
-			<van-col span="10" class="blogItem-footer">阅读: {{ item.ViewCount }} &nbsp; 推荐: {{item.DiggCount}}</van-col>
+		<div class="blog-item_title">{{item.Title}}</div>
+		<div class="blog-item_summary" @click="gotoDetail">{{item.Description}}</div>
+		<van-row class="blog-item_opt">
+			<!-- <van-col class="name blogItem-footer" span="8">{{item.BlogApp}}</van-col> -->
+			<van-col
+				span="18"
+				class="blog-item_footer"
+			>阅读: {{ item.ViewCount }} &nbsp; 推荐: {{item.DiggCount}}&nbsp; 评论: {{item.CommentCount}}</van-col>
 			<van-col
 				span="6"
 				offset="0"
-				class="blogItem-footer"
+				class="blog-item_footer"
 				style="text-align: right;"
 			>{{ item.PostDate | dateFormat }}</van-col>
 		</van-row>
@@ -24,8 +27,8 @@ export default {
 	name: "cnBlogItem",
 	data() {
 		return {
-			isSelf:false
-		}
+			isSelf: false
+		};
 	},
 	props: {
 		item: {
@@ -34,7 +37,7 @@ export default {
 		}
 	},
 	created() {
-		this.isSelf=this.$route.query.isSelf||this.isSelf;
+		this.isSelf = this.$route.query.isSelf || this.isSelf;
 	},
 	methods: {
 		errorFace: function(event) {
@@ -42,13 +45,42 @@ export default {
 			event.target.src = userPhoto;
 		},
 		gotoZone: function() {
-			let that=this;
+			let that = this;
 			that.$router.push({
 				name: "blogApp",
 				query: {
 					blogApp: that.item.BlogApp,
-					author:that.item.Author,
-					isSelf:true
+					author: that.item.Author,
+					isSelf: true
+				}
+			});
+		},
+		gotoDetail: function() {
+			let that = this;
+			var blog = {
+				id: that.item.Id,
+				avatar: that.item.Avatar,
+				author: that.item.Author,
+				commentCount: that.item.CommentCount,
+				title: that.item.Title,
+				postDate: that.item.PostDate,
+				diggCount: that.item.DiggCount,
+				viewCount: that.item.ViewCount,
+				blogApp: that.item.BlogApp
+			};
+			that.$router.push({
+				name: "blogDetail",
+				query: {
+					info: encodeURI(JSON.stringify(blog))
+					// id: that.item.Id,
+					// avatar: that.item.Avatar,
+					// author: that.item.Author,
+					// commentCount: that.item.CommentCount,
+					// title: that.item.Title,
+					// postDate: that.item.PostDate,
+					// diggCount: that.item.DiggCount,
+					// viewCount: that.item.ViewCountx,
+					// blogApp: that.item.BlogApp
 				}
 			});
 		}
@@ -56,37 +88,39 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.item {
+@border-bottom_color:#eeeeee;
+@green:#07c160;
+@blue:#63b8ff;
+.blog-item {
 	padding: 0.625rem;
-	border-bottom: 0.3125rem solid #eeeeee;
+	border-bottom: 0.3125rem solid @border-bottom_color;
 	box-sizing: border-box;
 	width: 100%;
-	// height: 12.5rem;
 }
-.header {
+.blog-item_header {
 	padding: 0 0.3125rem;
 	width: 100%;
 	text-align: left;
 }
-.faceImg {
+.blog-item_faceImg {
 	width: 1.5625rem;
 	height: 1.5625rem;
 	border-radius: 50%;
 	display: inline-block;
 	vertical-align: middle;
 }
-.blog {
+.blog-item_author {
 	display: inline-block;
 	line-height: 1.5625rem;
 	padding: 0.3125rem;
 	text-align: left;
-	color: #07c160;
+	color:@green;
 }
-.name {
+.blog-item_name {
 	text-align: left;
-	color: #63b8ff;
+	color:@blue;
 }
-.title {
+.blog-item_title {
 	text-align: left;
 	font-size: 0.875rem;
 	font-weight: bold;
@@ -96,7 +130,7 @@ export default {
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
 }
-.summary {
+.blog-item_summary {
 	margin-top: 0.8125rem;
 	font-size: 0.875rem;
 	color: gray;
@@ -109,7 +143,7 @@ export default {
 	-webkit-line-clamp: 4;
 	-webkit-box-orient: vertical;
 }
-.opt {
+.blog-item_opt {
 	position: relative;
 	color: gray;
 	font-size: 0.8125rem;
@@ -117,7 +151,7 @@ export default {
 	margin-right: 0.625rem;
 	text-align: left;
 }
-.blogItem-footer {
+.blog-item_footer {
 	display: inline-block;
 	line-height: 1.5625rem;
 	padding: 0.3125rem;
