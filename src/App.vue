@@ -1,15 +1,21 @@
 <template>
 	<div>
-		<router-view/>
+		<keep-alive :include="include">
+			<router-view/>
+		</keep-alive>
 	</div>
 </template>
 <script>
+import routerConfig from "@/router/router";
+const cacheRouter = routerConfig.filter(x => x.meta.cache).map(x => x.name);
 export default {
 	name: "App",
 	data() {
-		return {};
-	},mounted() {
-	}
+		return {
+			include: cacheRouter.length > 0 ? cacheRouter.join(",") : ""
+		};
+	},
+	mounted() {}
 };
 </script>
 

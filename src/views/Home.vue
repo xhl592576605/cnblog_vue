@@ -3,15 +3,17 @@
 		<cn-layout :active="0">
 			<van-tabs swipeable sticky color="#07c160">
 				<van-tab v-for="(tab,index) in cnHomeTabs" :title="tab.name" :key="index">
-					<div class="tab-items" v-if="tab.name==='博客'">
+					<div class="tab-items" v-if="tab.name==='博客'" ref="tabList">
 						<van-pull-refresh v-model="tab.isPushUpLoading" @refresh="onBlogUpRefresh">
-							<van-list
-								v-model="tab.isPushDownLoading"
-								:finished="tab.isFinished"
-								@load="onBlogDownLoad()"
-							>
-								<cn-blog-item :item="item" :key="key" v-for="(item,key) in tab.items"></cn-blog-item>
-							</van-list>
+							<keep-alive>
+								<van-list
+									v-model="tab.isPushDownLoading"
+									:finished="tab.isFinished"
+									@load="onBlogDownLoad()"
+								>
+									<cn-blog-item :item="item" :key="key" v-for="(item,key) in tab.items"></cn-blog-item>
+								</van-list>
+							</keep-alive>
 						</van-pull-refresh>
 					</div>
 					<div class="tab-items" v-if="tab.name==='精华'">
@@ -217,6 +219,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-
 </style>
 
