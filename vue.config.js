@@ -2,6 +2,7 @@
 module.exports = {
     publicPath: "/",
     productionSourceMap: false,
+    assetsDir:"./static",
     devServer: {
         host: "192.168.123.22",
         port: 8080,
@@ -26,7 +27,10 @@ module.exports = {
             "/oauth": {
                 target: "https://oauth.cnblogs.com",
                 changeOrigin: true,
-                secure: false
+                secure: false,
+                pathRewrite:{
+                    "^/oauth":""
+                }
             }
         }
     },

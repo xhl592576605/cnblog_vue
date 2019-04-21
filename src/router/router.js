@@ -62,6 +62,30 @@ let configs = [
         meta: {
             cache: false
         }
+    },
+    {
+        path: "/login",//AuthCallback
+        name: "login",
+        component: () => import("@/views/Login"),
+        meta: {
+            cache: false
+        }
+    },
+    {
+        path: "/auth/callback",//AuthCallback
+        name: "authCallback",
+        component: () => import("@/views/AuthCallback"),
+        meta: {
+            cache: false
+        }
+    },
+    {
+        path: "/newsDeatil",//AuthCallback
+        name: "newsDeatil",
+        component: () => import("@/views/NewsDeatil"),
+        meta: {
+            cache: false
+        }
     }
 ];
 

@@ -85,3 +85,22 @@ export async function getBlogInfo(blogApp){
         return Promise.reject(err);
     }
 }
+
+/**
+ * 获取博文的评论列表
+ * @method getBlogComments
+ * @param {string} blogApp 	博客名
+ * @param {string} postId  	博文编号
+ * @param {string} pageIndex 页码
+ * @param {string} pageSize 页容量
+ */
+export async function getBlogComments(blogApp,postId,pageIndex,pageSize){
+    try {
+        const res = await $api_http.get(
+            `/blogs/${blogApp}/posts/${postId}/comments?pageIndex=${pageIndex}&pageSize=${pageSize}`
+        );
+        return Promise.resolve(res);
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}

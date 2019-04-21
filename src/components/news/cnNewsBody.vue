@@ -5,11 +5,11 @@
 </template>
 <script>
 export default {
-	name: "cnBlogBody",
+	name: "cnNewsBody",
 	props: {
 		html: {
 			type: String,
-			default: "博客内容丢失了....."
+			default: "新闻内容丢失了....."
 		}
 	},
 	created() {

@@ -1,5 +1,6 @@
 <template>
 	<div class="home">
+		<van-search placeholder="请输入搜索关键词" v-bind:readonly="true"/>
 		<cn-layout :active="0">
 			<van-tabs swipeable sticky color="#07c160">
 				<van-tab v-for="(tab,index) in cnHomeTabs" :title="tab.name" :key="index">

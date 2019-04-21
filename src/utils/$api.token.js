@@ -50,7 +50,6 @@ export default async function getApiToken() {
                 })
             )
             .then(res => {
-                console.log(1)
                 if (res instanceof Object) {
                     //token = res.access_token;
                     window.$cookies.set(

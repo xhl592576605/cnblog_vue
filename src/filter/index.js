@@ -1,5 +1,5 @@
 import Vue from "vue";
-import moment from "moment";
+import moment, { updateLocale } from "moment";
 moment.locale("zh-cn");
 
 /**
@@ -10,6 +10,9 @@ moment.locale("zh-cn");
 const imgConvert = url => {
     //没有在nginx做反向代理，直接用别人的反向代理访问,
     //该地址是cdn缓存图片存在，可能找不到图片
+    if(url==undefined||url==null){
+        url="";
+    }
     url = url
         .replace("http://", "")
         .replace("https://", "")

@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<van-search placeholder="请输入搜索关键词" v-bind:readonly="true"/>
 		<div>
 			<slot></slot>
 		</div>

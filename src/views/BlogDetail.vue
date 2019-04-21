@@ -14,35 +14,63 @@
 			</van-row>
 		</div>
 		<cn-blog-body :html="content"></cn-blog-body>
+
+		<div class="comments">
+			<span class="comments-title">所有评论</span>
+			<van-list
+				v-model="comments.loading"
+				:finished="comments.finished"
+				finished-text="-没有评论了-"
+				@load="onBlogCommentsDownLoad()"
+			>
+				<cn-blog-comments v-for=" (item,key) in comments.items" :key="key" :comments="item"></cn-blog-comments>
+			</van-list>
+		</div>
+		<div class="comments-footer">
+			<van-field placeholder="说点什么..." clearable v-model="commentsContent">
+				<i slot="left-icon" class="iconfont icon-comment cell-icon"/>
+				<van-button slot="button" size="small" type="primary" @click="sendComments">发送</van-button>
+				<i
+					slot="right-icon"
+					class="iconfont icon-emaxcitygerenxinxitubiaoji02 cell-icon footer-padding"
+				/>
+			</van-field>
+		</div>
 	</div>
 </template>
 <script>
 import userPhoto from "@/assets/icon/user.png";
-import { getBlogBody } from "@/api/blog";
+import { getBlogBody, getBlogComments } from "@/api/blog";
+import { sendBlogCommnets } from "@/api/user";
+import { DEVELOPMENT, LOGIN_ENV, AUTHORIZE_URL } from "../config/conf";
 export default {
 	name: "blogDetail",
 	data() {
 		return {
 			blog: {},
-			content: ""
+			content: "",
+			comments: {
+				items: [],
+				loading: false,
+				finished: false
+			},
+			commentsContent: ""
 		};
 	},
 	created() {
-        let that = this;
-        that.getParms();
+		let that = this;
+		that.getParms();
 		document.title = "博文";
 		this.getBlogContent();
-		
 	},
-	mounted() {
-	},
+	mounted() {},
 	methods: {
 		/**
 		 * 获取参数
 		 */
 		getParms: function() {
-            let that = this;
-            that.blog = JSON.parse(decodeURI(that.$route.query.info));
+			let that = this;
+			that.blog = JSON.parse(decodeURI(that.$route.query.info));
 		},
 		errorFace: function(event) {
 			//失败更改默认头像
@@ -66,6 +94,67 @@ export default {
 			getBlogBody(that.blog.id).then(res => {
 				that.content = res;
 			});
+		},
+		onBlogCommentsDownLoad: function(reload) {
+			let that = this;
+			setTimeout(() => {
+				if (reload) {
+					that.comments.items.length = 0;
+				}
+				let pageSize = 10;
+				let page =
+					Math.floor(that.comments.items.length / pageSize) + 1;
+				that.comments.loading = true;
+				getBlogComments(
+					that.blog.blogApp,
+					that.blog.id,
+					page,
+					pageSize
+				).then(res => {
+					that.comments.loading = false;
+					if (res.length != pageSize) {
+						that.comments.finished = true;
+					}
+					that.comments.items.push(...res);
+				});
+			}, 500);
+		},
+		sendComments: function() {
+			let that = this;
+			//TODO:需要做统一判断
+			if (
+				window.localStorage.getItem("cnBlogRefreshToken") ==
+					undefined ||
+				window.localStorage.getItem("cnBlogRefreshToken")==""
+			) {
+				if (LOGIN_ENV == DEVELOPMENT) {
+					that.$router.push({
+						name: "login"
+					});
+				} else {
+					window.location.href = AUTHORIZE_URL;
+				}
+				return;
+			}
+
+			if (that.commentsContent == "") {
+				that.$toast({ type: "fail", message: "留言不能为空" });
+				return;
+			}
+			sendBlogCommnets(
+				that.blog.blogApp,
+				that.blog.id,
+				that.commentsContent
+			).then(
+				res => {
+					that.$toast("提交成功");
+					that.onBlogCommentsDownLoad(true);
+					that.commentsContent = "";
+				},
+				err => {
+					that.$toast({ type: "fail", message: "提交失败" });
+				}
+			);
 		}
 	}
 };
@@ -76,10 +165,10 @@ export default {
 	padding: 10px;
 	border-bottom: 5px solid #eeeeee;
 	position: relative;
-    position: -webkit-sticky;
-    position: -moz-sticky;
-    position: sticky;
-    top: 0;
+	position: -webkit-sticky;
+	position: -moz-sticky;
+	position: sticky;
+	top: 0;
 	z-index: 1;
 	background-color: #ffffff;
 }
@@ -109,5 +198,41 @@ export default {
 	text-align: left;
 	color: #07c160;
 }
+.comments {
+	margin-top: 10px;
+	margin-bottom: 50px;
+	background-color: #eeeeee;
+	border-bottom: 5px solid #eeeeee;
+	.comments-title {
+		display: inline-block;
+		padding-top: 5px;
+		padding-left: 10px;
+		padding-bottom: 5px;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	.commentsList {
+		background-color: #ffffff;
+	}
+}
+.comments-footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	.footer-padding {
+		padding-right: 10px;
+	}
+}
 </style>
+<style lang="less">
+.van-list__finished-text {
+	color: #969799;
+	font-size: 13px;
+	line-height: 40px;
+	text-align: center;
+	background-color: #ffffff !important;
+	height: 40px !important;
+}
+</style>
+
 

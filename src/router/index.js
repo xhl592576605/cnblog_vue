@@ -4,6 +4,7 @@ import config from "./router";
 Vue.use(Router);
 // import store from '@/store'
 let routers = new Router({
+    mode: 'history',
     routes: config
 });
 
