@@ -1,7 +1,7 @@
 <template>
 	<div class="bookMarks">
 		<van-panel title="我的收藏">
-			<div style="height:100vh">
+			<div style="height:90vh">
 				<van-pull-refresh v-model="isPushUpLoading" @refresh="onBookMarksUpRefresh">
 					<van-list
 						v-model="isPushDownLoading"
@@ -9,19 +9,18 @@
 						@load="onBookMarksDownLoad()"
 						class="bookmarksList"
 					>
-						<van-swipe-cell :right-width="65" :left-width="65" :key="key" v-for="(item,key) in items">
-							<span slot="left">选择</span>
+						<van-swipe-cell
+							:right-width="65"
+							:key="key"
+							v-for="(item,key) in items"
+							:on-close="onClose"
+							:url="item.LinkUrl"
+						>
 							<van-cell-group>
-							<van-cell :title="item.Title" :url="item.LinkUrl"/>
+								<van-cell :title="item.Title" is-link :url="item.LinkUrl"/>
 							</van-cell-group>
 							<span slot="right">删除</span>
 						</van-swipe-cell>
-						<!-- <van-cell-group >
-							<van-swipe-cell :right-width="65" :left-width="65">
-								<van-cell :title="item.Title" is-link :url="item.LinkUrl"/>
-								<span slot="right">删除</span>
-							</van-swipe-cell>
-						</van-cell-group> -->
 					</van-list>
 				</van-pull-refresh>
 			</div>
@@ -29,7 +28,7 @@
 	</div>
 </template>
 <script>
-import { getBookMarks } from "@/api/user";
+import { getBookMarks, deleteBookmarks } from "@/api/user";
 export default {
 	name: "bookMarks",
 	data() {
@@ -76,14 +75,57 @@ export default {
 				}
 				that.items.push(...res);
 			});
+		},
+		onClose(clickPosition, instance) {
+			let that = this;
+			console.log(instance);
+			switch (clickPosition) {
+				case "left":
+				case "cell":
+				case "outside":
+					instance.close();
+					break;
+				case "right":
+					that.$dialog
+						.confirm({
+							message: "确认删除？"
+						})
+						.then(() => {
+							let url = instance.$el.getAttribute("url");
+							if (url == undefined || url == "") {
+								instance.close();
+								return;
+							}
+							deleteBookmarks(url)
+								.then(res => {
+									that.$notify({
+										message: "删除成功",
+										duration: 1000,
+										background: "#07c160"
+									});
+									setTimeout(res => {
+										that.onBookMarksUpRefresh();
+									}, 2000);
+								})
+								.catch(err => {
+									that.$notify({
+										message: "删除失败"
+									});
+								})
+								.finally(res => {
+									instance.close();
+								});
+						});
+					break;
+			}
 		}
 	}
 };
 </script>
 <style lang="less" scoped>
 .bookMarks {
+	padding: 10px;
 	background-color: #ffffff;
-	min-height: 100vh;
 }
 .bookmarksList {
 	height: 100vh-10px;
@@ -92,16 +134,16 @@ span {
 	font-size: 13px;
 }
 </style>
-<style scoped>
+<style lang="less">
 .van-cell {
 	width: 100%;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
-	padding: 5px 15px;
+	padding: 2px 15px;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
-	line-height: 24px;
+	line-height: 22px;
 	position: relative;
 	background-color: #fff;
 	color: #323233;
@@ -116,5 +158,28 @@ span {
 	display: -webkit-box;
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
+	font-size: 13px;
+	line-height: 37px;
+}
+.van-cell__left-icon,
+.van-cell__right-icon {
+	height: 42px;
+	min-width: 1em;
+	font-size: 16px;
+	line-height: 42px;
+}
+.van-swipe-cell {
+	// border-bottom: 1px solid #eeeeee;
+	&__left,
+	&__right {
+		display: inline-block;
+		width: 65px;
+		height: 42px;
+		color: #ffffff;
+		font-size: 15px;
+		line-height: 42px;
+		text-align: center;
+		background-color: #ff0000;
+	}
 }
 </style>

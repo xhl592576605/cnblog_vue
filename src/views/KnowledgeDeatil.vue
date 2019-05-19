@@ -2,7 +2,7 @@
 	<div>
 		<div class="knDeatil-header">
 			<div class="title">
-				{{knowlegde.title}}<small style="color: #07c160;font-size: 10px;">{{knowlegde.author||"佚名"}}</small>
+				{{knowlegde.title|deleteHtmlTag}}<small style="color: #07c160;font-size: 10px;">{{knowlegde.author||"佚名"}}</small>
 			</div>
 			<van-row class="opt">
 				<van-col span="18">阅读: {{ knowlegde.viewCount }} &nbsp; 推荐: {{knowlegde.diggCount}}</van-col>

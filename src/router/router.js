@@ -94,6 +94,14 @@ let configs = [
         meta: {
             cache: false
         }
+    },
+    {
+        path: "/search",
+        name: "search",
+        component: () => import("@/views/Search"),
+        meta: {
+            cache: false
+        }
     }
 ];
 

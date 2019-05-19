@@ -12,6 +12,7 @@
     "moment": "^2.24.0",
     "vant": "^1.6.9",
     "vconsole": "^3.3.0",
+    "vee-validate": "^2.2.7",
     "vue": "^2.6.6",
     "vue-cookies": "^1.5.12",
     "vue-router": "^3.0.1",

@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="newsDeatil-header">
-			<div class="title">{{news.title}}</div>
+			<div class="title">{{news.title|deleteHtmlTag}}</div>
 			<van-row class="opt">
 				<van-col
 					span="18"

@@ -17,7 +17,7 @@ export const CLIENT_SECRET =
 // export const CLIENT_SECRET =
 //     "jlOYY3VoHEKvmbJ1Fh8wd8oDghkjHkc-8MaWqu0dfnZPglJqW2BoDWoXzI3Go2ez1VKfrcYxgT5TnMCG";
 
-export const LOGIN_ENV = DEVELOPMENT; //development|production
+export const LOGIN_ENV = PRODUCTION; //development|production
 
 export const LOGIN_REDIRECT_URI = "http://cnblog.xuhuale.cn/auth/callback";//https://oauth.cnblogs.com/auth/callback
 

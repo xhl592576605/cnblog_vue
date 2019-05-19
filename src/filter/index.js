@@ -38,5 +38,11 @@ const dateFormat = str => {
   
 };
 
+const deleteHtmlTag=str=>{
+
+    return str.replace(/<[^>]+>/g,"");
+}
+
 Vue.filter("imgConvert", imgConvert);
 Vue.filter("dateFormat", dateFormat);
+Vue.filter("deleteHtmlTag", deleteHtmlTag);

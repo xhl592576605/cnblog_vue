@@ -1,5 +1,6 @@
 import { CNBLOG_API_URL } from "../config/conf";
 import { getAuthorizeToken, refreshAuthorizeToken } from "../utils/$api.authorize";
+import { jumpLogin } from "../utils/$login";
 import axios from "axios";
 
 const instance = axios.create({
@@ -40,10 +41,11 @@ instance.interceptors.response.use(
                 window.$vm.$toast({
                     message: "登录已过期，需要重新登录"
                 });
+                jumpLogin();
                 //TODO：判断授权进入方式
-                window.$vm.$router.push({
-                    name: "login"
-                });
+                // window.$vm.$router.push({
+                //     name: "login"
+                // });
                 return Promise.reject(refreshToken);
             }
             //可能之前会有提示，但又在另外的地方，所以没办法使用单例模式，就延迟一小会
@@ -58,20 +60,23 @@ instance.interceptors.response.use(
                     background: '#07c160'
                 });
             }).catch(res => {
-                console.log(res)
+
                 window.$vm.$toast({
                     message: "重新登录失败，跳转登录界面"
                 });
-                window.$vm.$router.push({
-                    name: "login"
-                });
+                jumpLogin();
+                // window.$vm.$router.push({
+                //     name: "login"
+                // });
             }).finally(res => {
                 toast.clear();
             });
         } else {
-            window.$vm.$toast({
-                message: error.message
-            });
+            if (config.method != "head") {
+                window.$vm.$toast({
+                    message: error.message
+                });
+            }
         }
         return Promise.reject(error);
     }
