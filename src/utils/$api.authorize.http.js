@@ -1,5 +1,5 @@
 import { CNBLOG_API_URL } from "../config/conf";
-import {getAuthorizeToken,refreshAuthorizeToken} from "../utils/$api.authorize";
+import { getAuthorizeToken, refreshAuthorizeToken } from "../utils/$api.authorize";
 import axios from "axios";
 
 const instance = axios.create({
@@ -34,29 +34,41 @@ instance.interceptors.response.use(
         let config = error.config;
         if (response.status === 401) {
             //没有找到授权码，就先刷新token
-            let refreshToken= window.localStorage.getItem(_refreshTokenKey)||"";
-            if(refreshToken==undefined||refreshToken==""){
+            let refreshToken = window.localStorage.getItem(_refreshTokenKey) || "";
+            if (refreshToken == undefined || refreshToken == "") {
                 //没有办法得到刷新token，只能重新登录。
                 window.$vm.$toast({
-                    message: "登录状态已失效"
+                    message: "登录已过期，需要重新登录"
                 });
+                //TODO：判断授权进入方式
                 window.$vm.$router.push({
                     name: "login"
                 });
                 return Promise.reject(refreshToken);
             }
-            refreshAuthorizeToken(refreshToken).then(res => {
-                 /*这边不需要baseURL是因为会重新请求url
-                 *url中已经包含baseURL的部分了
-                 *如果不修改成空字符串，会变成'api/api/xxxx'的情况*/
-                 config.baseURL = '';
-                instance(config)
-            }).catch(res=>{
-                window.$vm.$toast({
-                    message: error.message
-                });
+            //可能之前会有提示，但又在另外的地方，所以没办法使用单例模式，就延迟一小会
+            const toast = window.$vm.$toast({
+                message: "登录态失效，重新登录中....",
+                type: "loading",
             });
-        }else{
+            refreshAuthorizeToken(refreshToken).then(res => {
+                window.$vm.$notify({
+                    message: '登录成功,请重新执行',
+                    duration: 1000,
+                    background: '#07c160'
+                });
+            }).catch(res => {
+                console.log(res)
+                window.$vm.$toast({
+                    message: "重新登录失败，跳转登录界面"
+                });
+                window.$vm.$router.push({
+                    name: "login"
+                });
+            }).finally(res => {
+                toast.clear();
+            });
+        } else {
             window.$vm.$toast({
                 message: error.message
             });

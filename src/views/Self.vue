@@ -20,6 +20,9 @@
 				<van-cell v-if="isLogin" title="我的主页" is-link @click="gotoZone">
 					<i slot="icon" class="iconfont icon-account1 cell-icon"/>
 				</van-cell>
+				<van-cell v-if="isLogin" title="我的收藏" is-link @click="gotoBookmarks">
+					<i slot="icon" class="iconfont icon- icon-emaxcitygerenxinxitubiaoji02 cell-icon"/>
+				</van-cell>
 				<van-cell title="关于" is-link>
 					<i slot="icon" class="iconfont icon-about cell-icon"/>
 				</van-cell>
@@ -33,10 +36,9 @@
 
 <script>
 // @ is an alias to /src
-const _apiAuthorizeTokenKey = "cnBlogAuthorizeToken";
-const _refreshTokenKey = "cnBlogRefreshToken";
+
 import { getLoginUsers } from "@/api/user";
-import { DEVELOPMENT, LOGIN_ENV, AUTHORIZE_URL } from "../config/conf";
+import { jumpLogin } from "@/utils/$login";
 import { mapActions } from "vuex";
 
 export default {
@@ -54,9 +56,8 @@ export default {
 	mounted() {},
 	activated() {
 		let that = this;
-		let refresh_token = window.localStorage.getItem(_refreshTokenKey);
-		if (refresh_token != undefined && refresh_token != "") {
-			that.isLogin = true;
+		that.isLogin = that.$store.state.user.isLogin;
+		if (that.isLogin) {
 			if (Object.keys(that.$store.state.user.user).length == 0) {
 				getLoginUsers().then(res => {
 					that.SET_USER(res);
@@ -69,18 +70,10 @@ export default {
 		login: function() {
 			//提供两种模式，一种是自动跳转，适合线上环境，一种是跳转登录界面，手动获取授权码，适合开发环境或线上环境并没有修改回调地址到自己本地
 			let that = this;
-			if (LOGIN_ENV == DEVELOPMENT) {
-				that.$router.push({
-					name: "login"
-				});
-			} else {
-				window.location.href = AUTHORIZE_URL;
-			}
+			jumpLogin();
 		},
 		loginOut: function() {
 			this.REMOVE_USER();
-			window.localStorage.removeItem(_refreshTokenKey);
-			window.$cookies.remove(_apiAuthorizeTokenKey);
 			window.location.reload();
 		},
 		gotoZone: function() {
@@ -93,6 +86,13 @@ export default {
 					isSelf: true
 				}
 			});
+		},
+		gotoBookmarks:function(){
+			let that = this;
+			that.$router.push({
+				name: "bookMarks"
+			});
+
 		}
 	}
 };
@@ -119,7 +119,7 @@ export default {
 	}
 	.name {
 		text-align: left;
-		width: 100%;
+		max-width: 300px;
 		color: black;
 		position: absolute;
 		font-size: bold;
@@ -129,7 +129,7 @@ export default {
 	.blogapp {
 		left: 80px;
 		text-align: left;
-		width: 100%;
+		max-width: 300px;
 		color: black;
 		position: absolute;
 		font-size: 14px;

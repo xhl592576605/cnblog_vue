@@ -15,6 +15,7 @@
 <script>
 import { AUTHORIZE_URL } from "../config/conf";
 import { getAuthorizeToken } from "../utils/$api.authorize";
+import { mapActions } from "vuex";
 export default {
 	name: "login",
 	data() {
@@ -27,6 +28,7 @@ export default {
 		that.code= that.$route.query.code||"";
 	},
 	methods: {
+		...mapActions("user", ["UPDATE_LOGINSTATE"]),
 		/**跳转获取授权码页面获取授权码 */
 		getCode: function() {
 			let that = this;
@@ -45,6 +47,7 @@ export default {
 				return;
 			}
 			getAuthorizeToken(that.code).then(res => {
+				that.UPDATE_LOGINSTATE();
 				this.$router.push({
 					name: "self"
 				});

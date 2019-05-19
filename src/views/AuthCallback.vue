@@ -6,11 +6,15 @@
 <script>
 import { getAuthorizeToken } from "../utils/$api.authorize";
 import { PRODUCTION, LOGIN_ENV } from "../config/conf";
+import { mapActions } from "vuex";
 export default {
 	data() {
 		return {
 			code: ""
 		};
+	},
+	methods: {
+		...mapActions("user", ["UPDATE_LOGINSTATE"])
 	},
 	mounted() {
 		let that = this;
@@ -23,12 +27,13 @@ export default {
 			if (LOGIN_ENV == PRODUCTION) {
 				//处于生产环境，直接登录，跳转个人中心
 				getAuthorizeToken(that.code).then(
-					res => {  
+					res => {
 						let logining = that.$toast({
-                            type:"loading",
+							type: "loading",
 							message: "登录中...",
 							close: function() {
 								//logining.clear({all:true});
+								that.UPDATE_LOGINSTATE();
 								that.$router.push({
 									name: "self",
 									replace: true

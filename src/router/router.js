@@ -86,6 +86,14 @@ let configs = [
         meta: {
             cache: false
         }
+    },
+    {
+        path: "/bookMarks",
+        name: "bookMarks",
+        component: () => import("@/views/BookMarks"),
+        meta: {
+            cache: false
+        }
     }
 ];
 

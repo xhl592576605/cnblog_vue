@@ -29,7 +29,7 @@
 		<div class="comments-footer">
 			<van-field placeholder="说点什么..." clearable v-model="commentsContent">
 				<i slot="left-icon" class="iconfont icon-comment cell-icon"/>
-				<van-button slot="button" size="small" type="primary" @click="sendComments">发送</van-button>
+				<van-button slot="button" size="small" type="primary" @click="sendComments">评论</van-button>
 				<i
 					slot="right-icon"
 					class="iconfont icon-emaxcitygerenxinxitubiaoji02 cell-icon footer-padding"
@@ -41,8 +41,8 @@
 <script>
 import userPhoto from "@/assets/icon/user.png";
 import { getBlogBody, getBlogComments } from "@/api/blog";
-import { sendBlogCommnets } from "@/api/user";
-import { DEVELOPMENT, LOGIN_ENV, AUTHORIZE_URL } from "../config/conf";
+import { sendBlogCommnets,IsExitBookmarks} from "@/api/user";
+import { isLogin, loginOut, jumpLogin } from "@/utils/$login";
 export default {
 	name: "blogDetail",
 	data() {
@@ -63,7 +63,14 @@ export default {
 		document.title = "博文";
 		this.getBlogContent();
 	},
-	mounted() {},
+	mounted() {
+		let that = this;
+		IsExitBookmarks(that.blog.url).then(res=>{
+			console.log(res)
+		},err=>{
+			console.log(err)
+		});
+	},
 	methods: {
 		/**
 		 * 获取参数
@@ -71,6 +78,7 @@ export default {
 		getParms: function() {
 			let that = this;
 			that.blog = JSON.parse(decodeURI(that.$route.query.info));
+			console.log(that.blog)
 		},
 		errorFace: function(event) {
 			//失败更改默认头像
@@ -95,6 +103,7 @@ export default {
 				that.content = res;
 			});
 		},
+		/**博客评论刷新 */
 		onBlogCommentsDownLoad: function(reload) {
 			let that = this;
 			setTimeout(() => {
@@ -119,26 +128,16 @@ export default {
 				});
 			}, 500);
 		},
+		/**发送评论 */
 		sendComments: function() {
 			let that = this;
-			//TODO:需要做统一判断
-			if (
-				window.localStorage.getItem("cnBlogRefreshToken") ==
-					undefined ||
-				window.localStorage.getItem("cnBlogRefreshToken")==""
-			) {
-				if (LOGIN_ENV == DEVELOPMENT) {
-					that.$router.push({
-						name: "login"
-					});
-				} else {
-					window.location.href = AUTHORIZE_URL;
-				}
+			if(!isLogin()){
+				jumpLogin();
 				return;
 			}
 
 			if (that.commentsContent == "") {
-				that.$toast({ type: "fail", message: "留言不能为空" });
+				that.$toast({ type: "fail", message: "评论内容不能为空" });
 				return;
 			}
 			sendBlogCommnets(
@@ -147,12 +146,12 @@ export default {
 				that.commentsContent
 			).then(
 				res => {
-					that.$toast("提交成功");
+					that.$toast("评论成功");
 					that.onBlogCommentsDownLoad(true);
 					that.commentsContent = "";
 				},
 				err => {
-					that.$toast({ type: "fail", message: "提交失败" });
+					that.$toast({ type: "fail", message: "评论失败" });
 				}
 			);
 		}

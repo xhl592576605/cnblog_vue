@@ -6,8 +6,8 @@
 		<van-tabbar v-model="activeNum" active-color="#07c160">
 			<van-tabbar-item icon="wap-home" to="/">首页</van-tabbar-item>
 			<van-tabbar-item icon="orders-o" to="./news">新闻</van-tabbar-item>
-			<van-tabbar-item icon="notes-o" to="./flashMemory">闪存</van-tabbar-item>
-			<van-tabbar-item icon="question-o" to="./question">博问</van-tabbar-item>
+			<!-- <van-tabbar-item icon="notes-o" to="./flashMemory">闪存</van-tabbar-item>
+			<van-tabbar-item icon="question-o" to="./question">博问</van-tabbar-item> -->
 			<van-tabbar-item icon="user-o" to="./self">我</van-tabbar-item>
 		</van-tabbar>
 	</div>

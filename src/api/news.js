@@ -88,3 +88,21 @@ export async function getRecommendedNewsItems(pageIndex, pageSize = 50) {
         return Promise.reject(err);
     }
 }
+
+/**
+ * 获取新闻的评论列表
+ * @method getBlogComments
+ * @param {string} newsId  	新闻ID
+ * @param {string} pageIndex 页码
+ * @param {string} pageSize 页容量
+ */
+export async function getNewsComments(newsId,pageIndex,pageSize){
+    try {
+        const res = await $api_http.get(
+            `/news/${newsId}/comments?pageIndex=${pageIndex}&pageSize=${pageSize}`
+        );
+        return Promise.resolve(res);
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}

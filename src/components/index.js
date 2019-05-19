@@ -8,6 +8,7 @@ import cnBlogBody from "./blog/cnBlogBody";
 import cnBlogComments from "./blog/cnBlogComments"
 import cnNewsItem from "./news/cnNewsItem";
 import cnNewsBody from "./news/cnNewsBody";
+import cnNewsComments from "./news/cnNewsComments";
 
 
 Vue.component(cnLayout.name, cnLayout);
@@ -19,3 +20,4 @@ Vue.component(cnBlogBody.name, cnBlogBody);
 Vue.component(cnBlogComments.name, cnBlogComments);
 Vue.component(cnNewsItem.name, cnNewsItem);
 Vue.component(cnNewsBody.name, cnNewsBody);
+Vue.component(cnNewsComments.name, cnNewsComments);

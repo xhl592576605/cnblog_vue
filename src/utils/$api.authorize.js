@@ -85,7 +85,7 @@ export async function refreshAuthorizeToken(refresh_token) {
             client_secret: CLIENT_SECRET,
             grant_type: `refresh_token`,
             refresh_token: refresh_token,
-            redirect_uri: "https://oauth.cnblogs.com/auth/callback"
+            redirect_uri:LOGIN_REDIRECT_URI //"https://oauth.cnblogs.com/auth/callback"
         })
     )
         .then(res => {
@@ -96,6 +96,11 @@ export async function refreshAuthorizeToken(refresh_token) {
                     `${res.expires_in}s`
                 );
                 window.localStorage.setItem(_refreshTokenKey, res.refresh_token);
+                window.$cookies.set(
+                    _apiAuthorizeTokenKey,
+                    res.access_token,
+                    `${res.expires_in}s`
+                );
                 return Promise.resolve(res.access_token);
             }
             return Promise.resolve(res.access_token);

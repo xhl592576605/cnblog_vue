@@ -1,10 +1,10 @@
-const _apiAuthorizeTokenKey = "cnBlogAuthorizeToken";
-const _refreshTokenKey = "cnBlogRefreshToken";
+
 const _userKey = "cnBlogUser"
-import { getLoginUsers } from "@/api/user";
+import { isLogin, loginOut, jumpLogin } from "@/utils/$login";
 
 const state = {
-    user: JSON.parse(window.localStorage.getItem(_userKey)) || {}
+    user: JSON.parse(window.localStorage.getItem(_userKey)) || {},
+    isLogin: isLogin()
 }
 
 const mutations = {
@@ -13,6 +13,9 @@ const mutations = {
     },
     REMOVE_USER(state) {
         state.user = null
+    },
+    UPDATE_LOGINSTATE(state) {
+        state.isLogin = isLogin();
     }
 }
 
@@ -23,7 +26,12 @@ const actions = {
     },
     REMOVE_USER({ commit }) {
         window.localStorage.removeItem(_userKey)
+        loginOut();
         commit('REMOVE_USER')
+        commit('UPDATE_LOGINSTATE')
+    },
+    UPDATE_LOGINSTATE({ commit }) {
+        commit('UPDATE_LOGINSTATE')
     }
 }
 

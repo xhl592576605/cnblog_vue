@@ -66,7 +66,8 @@ export default {
 				postDate: that.item.PostDate,
 				diggCount: that.item.DiggCount,
 				viewCount: that.item.ViewCount,
-				blogApp: that.item.BlogApp
+				blogApp: that.item.BlogApp,
+				url:that.item.Url
 			};
 			that.$router.push({
 				name: "blogDetail",
