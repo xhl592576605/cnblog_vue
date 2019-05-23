@@ -9,10 +9,16 @@ let routers = new Router({
 });
 
 routers.beforeEach((to, from, next) => {
+    if (_hmt) {
+        if (to.path) {
+            _hmt.push(['_trackPageview', '/#' + to.fullPath]);
+        }
+    }
     /* 路由发生变化修改页面title */
     if (to.meta.title) {
         document.title = to.meta.title;
     }
+    to.meta.$parent=from;
     next();
 });
 

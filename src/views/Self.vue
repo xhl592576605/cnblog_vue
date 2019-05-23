@@ -23,7 +23,7 @@
 				<van-cell v-if="isLogin" title="我的收藏" is-link @click="gotoBookmarks">
 					<i slot="icon" class="iconfont icon- icon-emaxcitygerenxinxitubiaoji02 cell-icon"/>
 				</van-cell>
-				<van-cell title="关于" is-link>
+				<van-cell title="关于" is-link @click="gotoAboutMe">
 					<i slot="icon" class="iconfont icon-about cell-icon"/>
 				</van-cell>
 			</van-cell-group>
@@ -93,7 +93,14 @@ export default {
 				name: "bookMarks"
 			});
 
+		},
+		gotoAboutMe:function(){
+			let that = this;
+			that.$router.push({
+				name: "about"
+			});
 		}
+
 	}
 };
 </script>

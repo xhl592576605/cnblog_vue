@@ -86,6 +86,16 @@ export default {
 			]
 		};
 	},
+	activated() {
+		let that=this;
+		if(that.$route.meta.$parent.name=="home"){
+			that.keyWord="";
+			that.cnSearchTabs.forEach((element, index) => {
+				element.items.length=0;
+			});
+		}
+		console.log(that.$route)
+	},
 	methods: {
 		/**返回首页 */
 		goHome: function() {
@@ -132,7 +142,6 @@ export default {
 			that.cnSearchTabs[tabIndex].isPushDownLoading = true;
 			search(searchType, that.keyWord, page).then(
 				res => {
-					console.log(res);
 					that.cnSearchTabs[tabIndex].isPushDownLoading = false;
 					if (res.length == 0) {
 						that.cnSearchTabs[tabIndex].isFinished = true;

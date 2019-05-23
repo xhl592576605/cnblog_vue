@@ -63,7 +63,7 @@ export default {
 						postDate: that.item.PublishTime,
 						diggCount: that.item.VoteTimes,
 						viewCount: that.item.ViewTimes,
-						blogApp: that.item.UserName,
+						blogApp: undefined,
 						url: that.item.Uri
 					};
 					that.$router.push({

@@ -20,7 +20,7 @@
 			<van-list
 				v-model="comments.loading"
 				:finished="comments.finished"
-				finished-text="-没有评论了-"
+				:finished-text="comments.finishedText"
 				@load="onBlogCommentsDownLoad()"
 			>
 				<cn-blog-comments v-for=" (item,key) in comments.items" :key="key" :comments="item"></cn-blog-comments>
@@ -101,7 +101,8 @@ export default {
 			comments: {
 				items: [],
 				loading: false,
-				finished: false
+				finished: false,
+				finishedText:"-没有评论了-"
 			},
 			commentsContent: "",
 			ismark: false,
@@ -150,14 +151,16 @@ export default {
 		/**跳转个人博客首页 */
 		gotoZone: function() {
 			let that = this;
-			that.$router.push({
-				name: "blogApp",
-				query: {
-					blogApp: that.blog.blogApp,
-					author: that.blog.author,
-					isSelf: true
-				}
-			});
+			if (that.blog.blogApp != undefined && that.blog.blogApp != null) {
+				that.$router.push({
+					name: "blogApp",
+					query: {
+						blogApp: that.blog.blogApp,
+						author: that.blog.author,
+						isSelf: true
+					}
+				});
+			}
 		},
 		/**获取博客内容 */
 		getBlogContent: function() {
@@ -182,13 +185,20 @@ export default {
 					that.blog.id,
 					page,
 					pageSize
-				).then(res => {
-					that.comments.loading = false;
-					if (res.length != pageSize) {
+				).then(
+					res => {
+						that.comments.loading = false;
+						if (res.length != pageSize) {
+							that.comments.finished = true;
+						}
+						that.comments.items.push(...res);
+					},
+					err => {
+						that.comments.finishedText="-加载失败-";
+						that.comments.loading = false;
 						that.comments.finished = true;
 					}
-					that.comments.items.push(...res);
-				});
+				);
 			}, 500);
 		},
 		/**发送评论 */

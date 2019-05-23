@@ -100,7 +100,15 @@ let configs = [
         name: "search",
         component: () => import("@/views/Search"),
         meta: {
-            cache: false
+            cache: true,
+        }
+    },
+    {
+        path: "/aboutme",
+        name: "about",
+        component: () => import("@/views/About"),
+        meta: {
+            cache: false,
         }
     }
 ];
