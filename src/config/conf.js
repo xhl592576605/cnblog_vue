@@ -8,14 +8,14 @@ export const CNBLOG_CREDENTIALS_URL =
     ENV === DEVELOPMENT ? "/credentials" : "https://api.cnblogs.com";
 export const CNBLOG_OAUTH_URL =
     ENV === DEVELOPMENT ? "/oauth" : "https://oauth.cnblogs.com";
-export const CLIENT_ID = "3eeaf22f-d7c1-4ca0-8ccb-4bd907c3c246";
+export const CLIENT_ID = "";
 export const CLIENT_SECRET =
-    "GcT-MWh778w9QCLZczMnbknK0I9qKeMTb84oB8lPAx9vRBwfLX0nwsDScYWuVX18aN3TWkRdgVskg8k6";
+    "";
 
 
-// export const CLIENT_ID = "5034af87-a13c-46a5-aa7e-f169b70a1e11";
+// export const CLIENT_ID = "";
 // export const CLIENT_SECRET =
-//     "jlOYY3VoHEKvmbJ1Fh8wd8oDghkjHkc-8MaWqu0dfnZPglJqW2BoDWoXzI3Go2ez1VKfrcYxgT5TnMCG";
+//     "";
 
 export const LOGIN_ENV = PRODUCTION; //development|production
 
