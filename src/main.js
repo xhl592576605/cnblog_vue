@@ -23,6 +23,7 @@ window._hmt = _hmt; // 必须把_hmt挂载到window下，否则找不到
 })();
 
 //阻止启动生产消息
+//测试触发构建
 Vue.config.productionTip = false;
 
 getApiToken().then(res => {

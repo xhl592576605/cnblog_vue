@@ -8,7 +8,7 @@
 			</div>
 			<div class="loginHeader" v-else>
 				<i class="logo iconfont icon-blogger"></i>
-				<div class="name">博客园 Cnblog.com</div>
+				<div class="name">博客园 Cnblogs.com</div>
 				<div class="blogapp">Code change the world</div>
 			</div>
 		</div>
