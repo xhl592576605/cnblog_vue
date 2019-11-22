@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "moment": "^2.24.0",
-    "vant": "^1.6.9",
+    "vant": "^2.1.8",
     "vconsole": "^3.3.0",
     "vee-validate": "^2.2.7",
     "vue": "^2.6.6",
