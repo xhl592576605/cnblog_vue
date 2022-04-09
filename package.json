@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "vant": "^1.6.9",
     "vconsole": "^3.3.0",
     "vee-validate": "^2.2.7",
